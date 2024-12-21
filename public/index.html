@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Enter Marks</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <h1>Enter Marks</h1>
+    <form id="marksForm" action="/submit" method="post">
+      <label>Name:</label><br />
+      <input type="text" name="name" required /><br /><br />
+      <label>Semester:</label><br />
+      <input type="number" name="sem" required /><br /><br />
+      <label>Course:</label><br />
+      <input type="text" name="course" required /><br /><br />
+      <!-- Input fields for each subject -->
+      <div class="subjects">
+        <div class="subject">
+          <h3>WAD</h3>
+          <label>T1 Marks (max 20):</label><br />
+          <input
+            type="number"
+            name="subject1[t1]"
+            max="20"
+            required
+          /><br /><br />
+          <label>T2 Marks (max 20):</label><br />
+          <input
+            type="number"
+            name="subject1[t2]"
+            max="20"
+            required
+          /><br /><br />
+          <label>AP Marks (max 15):</label><br />
+          <input
+            type="number"
+            name="subject1[ap]"
+            max="15"
+            required
+          /><br /><br />
+          <label>Tutorial Marks (max 15):</label><br />
+          <input
+            type="number"
+            name="subject1[tutorial]"
+            max="15"
+            required
+          /><br /><br />
+          <label>Semester Exam Marks (max 50):</label><br />
+          <input
+            type="number"
+            name="subject1[semester_exam_mark]"
+            max="50"
+            required
+          /><br /><br />
+        </div>
+        <div class="subject">
+          <h3>Structured Programming in C</h3>
+          <label>T1 Marks (max 20):</label><br />
+          <input
+            type="number"
+            name="subject2[t1]"
+            max="20"
+            required
+          /><br /><br />
+          <label>T2 Marks (max 20):</label><br />
+          <input
+            type="number"
+            name="subject2[t2]"
+            max="20"
+            required
+          /><br /><br />
+          <label>AP Marks (max 15):</label><br />
+          <input
+            type="number"
+            name="subject2[ap]"
+            max="15"
+            required
+          /><br /><br />
+          <label>Tutorial Marks (max 15):</label><br />
+          <input
+            type="number"
+            name="subject2[tutorial]"
+            max="15"
+            required
+          /><br /><br />
+          <label>Semester Exam Marks (max 50):</label><br />
+          <input
+            type="number"
+            name="subject2[semester_exam_mark]"
+            max="50"
+            required
+          /><br /><br />
+        </div>
+        <div class="subject">
+          <h3>Data Structures</h3>
+          <label>T1 Marks (max 20):</label><br />
+          <input
+            type="number"
+            name="subject3[t1]"
+            max="20"
+            required
+          /><br /><br />
+          <label>T2 Marks (max 20):</label><br />
+          <input
+            type="number"
+            name="subject3[t2]"
+            max="20"
+            required
+          /><br /><br />
+          <label>AP Marks (max 15):</label><br />
+          <input
+            type="number"
+            name="subject3[ap]"
+            max="15"
+            required
+          /><br /><br />
+          <label>Tutorial Marks (max 15):</label><br />
+          <input
+            type="number"
+            name="subject3[tutorial]"
+            max="15"
+            required
+          /><br /><br />
+          <label>Semester Exam Marks (max 50):</label><br />
+          <input
+            type="number"
+            name="subject3[semester_exam_mark]"
+            max="50"
+            required
+          /><br /><br />
+        </div>
+        <div class="subject">
+          <h3>DBMS</h3>
+          <label>T1 Marks (max 20):</label><br />
+          <input
+            type="number"
+            name="subject4[t1]"
+            max="20"
+            required
+          /><br /><br />
+          <label>T2 Marks (max 20):</label><br />
+          <input
+            type="number"
+            name="subject4[t2]"
+            max="20"
+            required
+          /><br /><br />
+          <label>AP Marks (max 15):</label><br />
+          <input
+            type="number"
+            name="subject4[ap]"
+            max="15"
+            required
+          /><br /><br />
+          <label>Tutorial Marks (max 15):</label><br />
+          <input
+            type="number"
+            name="subject4[tutorial]"
+            max="15"
+            required
+          /><br /><br />
+          <label>Semester Exam Marks (max 50):</label><br />
+          <input
+            type="number"
+            name="subject4[semester_exam_mark]"
+            max="50"
+            required
+          /><br /><br />
+        </div>
+      </div>
+      <input type="submit" value="Submit" />
+    </form>
+    <h2>Or Upload Excel File</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <input
+        type="file"
+        name="excel"
+        accept=".xlsx, .xls"
+        required
+      /><br /><br />
+      <input type="submit" value="Upload" />
+    </form>
+    <br />
+    <a href="/bellcurve">View Bell Curve</a>
+    <br />
+    <a href="/grades">View All Grades</a>
+  </body>
+  <script>
+    document
+      .getElementById("marksForm")
+      .addEventListener("submit", function (event) {
+        const inputs = document.querySelectorAll('input[type="number"]');
+        for (let input of inputs) {
+          const max = parseInt(input.getAttribute("max"));
+          const value = parseInt(input.value);
+          if (value < 0 || value > max) {
+            alert(
+              `Please enter valid marks within the specified range for ${input.previousElementSibling.textContent}`
+            );
+            event.preventDefault();
+            return;
+          }
+        }
+      });
+  </script>
+</html>

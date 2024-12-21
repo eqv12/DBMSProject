@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bell Curve</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <h1>Bell Curve of Relative Scores</h1>
+    <canvas id="bellCurveChart"></canvas>
+    <h2>Subject-wise Distribution</h2>
+    <label for="subjectSelector">Select Subject:</label>
+    <select id="subjectSelector">
+      <option value="1">WAD</option>
+      <option value="2">Structured Programming in C</option>
+      <option value="3">Data Structures</option>
+      <option value="4">DBMS</option>
+    </select>
+    <canvas id="subjectChart"></canvas>
+    <script>
+      fetch("/getTotals")
+        .then((response) => response.json())
+        .then((data) => {
+          const ctx = document
+            .getElementById("bellCurveChart")
+            .getContext("2d");
+          new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: data.labels,
+              datasets: [
+                {
+                  label: "Relative Score",
+                  data: data.frequencies,
+                  borderColor: "blue",
+                  fill: false,
+                },
+              ],
+            },
+            options: {
+              scales: {
+                x: { title: { display: true, text: "Relative Score" } },
+                y: { title: { display: true, text: "Number of Students" } },
+              },
+            },
+          });
+        });
+
+      document
+        .getElementById("subjectSelector")
+        .addEventListener("change", function () {
+          const subjectId = this.value;
+          fetch(`/getSubjectTotals?subjectId=${subjectId}`)
+            .then((response) => response.json())
+            .then((data) => {
+              const ctx = document
+                .getElementById("subjectChart")
+                .getContext("2d");
+              new Chart(ctx, {
+                type: "line",
+                data: {
+                  labels: data.labels,
+                  datasets: [
+                    {
+                      label: "Relative Score",
+                      data: data.frequencies,
+                      borderColor: "green",
+                      fill: false,
+                    },
+                  ],
+                },
+                options: {
+                  scales: {
+                    x: { title: { display: true, text: "Relative Score" } },
+                    y: { title: { display: true, text: "Number of Students" } },
+                  },
+                },
+              });
+            });
+        });
+    </script>
+  </body>
+</html>
