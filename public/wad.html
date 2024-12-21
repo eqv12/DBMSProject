@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web Tech Grades</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <h1>Web Tech Grades</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Semester</th>
+          <th>Course</th>
+          <!-- <th>Subject</th> -->
+          <th>T1</th>
+          <th>T2</th>
+          <th>Average</th>
+          <th>AP</th>
+          <th>Tutorial</th>
+          <th>Semester Exam</th>
+          <th>Total</th>
+          <th>Relative Score</th>
+        </tr>
+      </thead>
+      <tbody id="gradesTableBody"></tbody>
+    </table>
+    <script>
+      fetch("/getGradesBySubject?subject=WAD")
+        .then((response) => response.json())
+        .then((data) => {
+          const tableBody = document.getElementById("gradesTableBody");
+          data.forEach((row) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+            <td>${row.name}</td>
+            <td>${row.sem}</td>
+            <td>${row.course}</td>
+            
+            <td>${row.t1}</td>
+            <td>${row.t2}</td>
+            <td>${row.average}</td>
+            <td>${row.ap}</td>
+            <td>${row.tutorial}</td>
+            <td>${row.semester_exam_mark}</td>
+            <td>${row.total}</td>
+            <td>${row.relative_score}</td>
+          `;
+            tableBody.appendChild(tr);
+          });
+        });
+    </script>
+  </body>
+</html>
