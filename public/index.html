@@ -76,25 +76,15 @@
       <input type="file" name="excel" accept=".xlsx, .xls" required /><br /><br />
       <input type="submit" value="Upload" />
     </form>
-
-    <div class="actions">
-      <form action="/bellcurve" method="get">
-        <button type="submit">View Bell Curve</button>
-      </form>
-      <br>
-
-      <form action="/grades" method="get">
-        <h1 style="font-size: large; color: black;">View Grages</h1>
-        <button type="submit">DBMS</button>
-        <button type="submit">SPC</button>
-        <button type="submit">DSA</button>
-        <button type="submit">MFCS</button>
-      </form>
-    
-    </div>
-
-    <script>
-      document.getElementById("marksForm").addEventListener("submit", function (event) {
+    <br />
+    <a href="/bellcurve">View Bell Curve</a>
+    <br />
+    <a href="/grades">View All Grades</a>
+  </body>
+  <script>
+    document
+      .getElementById("marksForm")
+      .addEventListener("submit", function (event) {
         const inputs = document.querySelectorAll('input[type="number"]');
         for (let input of inputs) {
           const max = parseInt(input.getAttribute("max"));
