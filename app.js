@@ -310,6 +310,32 @@ app.get("/getAllGrades", (req, res) => {
   );
 });
 
+app.get('/getGradesBySubject', (req, res) => {
+  const subject = req.query.subject; // Extract the subject from query parameters
+
+  if (!subject) {
+    return res.status(400).send("Subject query parameter is required.");
+  }
+
+  db.all(
+    `SELECT students.name, students.sem, students.course, marks.t1, marks.t2, marks.average, marks.ap, marks.tutorial, marks.semester_exam_mark, marks.total, marks.relative_score
+     FROM marks
+     JOIN students ON marks.student_id = students.student_id
+     JOIN subjects ON marks.subject_id = subjects.subject_id
+     WHERE subjects.subject_name = ?`, // Filter by subject
+    [subject], // Pass subject as a parameter
+    (err, rows) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Server error");
+      }
+
+      res.json(rows);
+    }
+  );
+});
+
+
 app.listen(3000, () => {
   console.log("Server started on port 3000");
 });
