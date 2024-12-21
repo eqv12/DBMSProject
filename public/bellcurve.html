@@ -17,7 +17,7 @@
       <option value="4">DBMS</option>
     </select>
     <canvas id="subjectChart"></canvas>
-    <script>
+    <!-- <script>
       fetch("/getTotals")
         .then((response) => response.json())
         .then((data) => {
@@ -78,6 +78,102 @@
               });
             });
         });
+    </script> -->
+
+    <script>
+      let bellCurveChartInstance = null; // To track the bell curve chart instance
+      let subjectChartInstance = null; // To track the subject chart instance
+
+      // Fetch the overall bell curve data
+      fetch("/getTotals")
+        .then((response) => response.json())
+        .then((data) => {
+          const ctx = document.getElementById("bellCurveChart").getContext("2d");
+
+          // Destroy existing chart if it exists
+          if (bellCurveChartInstance) {
+            bellCurveChartInstance.destroy();
+          }
+
+          bellCurveChartInstance = new Chart(ctx, {
+            type: "line", // Consider changing this to "bar" for histogram style
+            data: {
+              labels: data.labels, // Percentile or score ranges
+              datasets: [
+                {
+                  label: "Relative Score",
+                  data: data.frequencies, // Frequency of students in each range
+                  borderColor: "blue",
+                  fill: false,
+                  borderWidth: 2,
+                },
+              ],
+            },
+            options: {
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: "Relative Score",
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: "Number of Students",
+                  },
+                },
+              },
+            },
+          });
+        });
+
+      // Fetch and plot data for subject-specific chart
+      document.getElementById("subjectSelector").addEventListener("change", function () {
+        const subjectId = this.value;
+        fetch(`/getSubjectTotals?subjectId=${subjectId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            const ctx = document.getElementById("subjectChart").getContext("2d");
+
+            // Destroy existing chart if it exists
+            if (subjectChartInstance) {
+              subjectChartInstance.destroy();
+            }
+
+            subjectChartInstance = new Chart(ctx, {
+              type: "line", // Consider changing this to "bar"
+              data: {
+                labels: data.labels, // Percentile or score ranges
+                datasets: [
+                  {
+                    label: "Relative Score",
+                    data: data.frequencies, // Frequency of students in each range
+                    borderColor: "green",
+                    fill: false,
+                    borderWidth: 2,
+                  },
+                ],
+              },
+              options: {
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: "Relative Score",
+                    },
+                  },
+                  y: {
+                    title: {
+                      display: true,
+                      text: "Number of Students",
+                    },
+                  },
+                },
+              },
+            });
+          });
+      });
     </script>
   </body>
 </html>
